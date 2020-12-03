@@ -22,10 +22,10 @@ defmodule Tobogganator do
     |> Enum.at(x)
   end
 
-  def go(tob, x, y, slope, count) do
-    case at(tob, x, y) do
-      "#" -> go(tob, x + slope.x, y + slope.y, slope, count + 1)
-      "." -> go(tob, x + slope.x, y + slope.y, slope, count)
+  def go(tob, start, slope, count \\ 0) do
+    case at(tob, start.x, start.y) do
+      "#" -> go(tob, %{x: start.x + slope.x, y: start.y + slope.y}, slope, count + 1)
+      "." -> go(tob, %{x: start.x + slope.x, y: start.y + slope.y}, slope, count)
       nil -> count
     end
   end
@@ -34,26 +34,22 @@ end
 tob =
   "input.txt"
   |> File.read!()
-  |> Tobogganator.new
+  |> Tobogganator.new()
 
+start = %{x: 0, y: 0}
 slope = %{x: 3, y: 1}
-result_1 =
-  Tobogganator.go(tob, 0, 0, slope, 0) |> IO.inspect(label: "Total Trees 3:1")
+result_1 = Tobogganator.go(tob, start, slope) |> IO.inspect(label: "Total Trees 3:1")
 
 slope2 = %{x: 1, y: 1}
-result_2 =
-  Tobogganator.go(tob, 0, 0, slope2, 0) |> IO.inspect(label: "Total Trees 1:1")
+result_2 = Tobogganator.go(tob, start, slope2) |> IO.inspect(label: "Total Trees 1:1")
 
 slope3 = %{x: 5, y: 1}
-result_3 =
-  Tobogganator.go(tob, 0, 0, slope3, 0) |> IO.inspect(label: "Total Trees 5:1")
+result_3 = Tobogganator.go(tob, start, slope3) |> IO.inspect(label: "Total Trees 5:1")
 
 slope4 = %{x: 7, y: 1}
-result_4 =
-  Tobogganator.go(tob, 0, 0, slope4, 0) |> IO.inspect(label: "Total Trees 7:1")
+result_4 = Tobogganator.go(tob, start, slope4) |> IO.inspect(label: "Total Trees 7:1")
 
 slope5 = %{x: 1, y: 2}
-result_5 =
-  Tobogganator.go(tob, 0, 0, slope5, 0) |> IO.inspect(label: "Total Trees 1:2")
+result_5 = Tobogganator.go(tob, start, slope5) |> IO.inspect(label: "Total Trees 1:2")
 
-result_1 * result_2 * result_3 * result_4 * result_5 |> IO.inspect(label: "Total")
+(result_1 * result_2 * result_3 * result_4 * result_5) |> IO.inspect(label: "Total")
