@@ -10,18 +10,16 @@ defmodule Tobogganator do
     %__MODULE__{map: result, width: result |> hd |> length}
   end
 
-  def at(tob, x, y) do
+  def at(%__MODULE__{width: width} = tob, x, y) when x >= width do
     offset = Integer.floor_div(x, tob.width)
 
-    if offset > 0 do
-      tob.map
-      |> Enum.at(y, [])
-      |> Enum.at(x - tob.width * offset)
-    else
-      tob.map
-      |> Enum.at(y, [])
-      |> Enum.at(x)
-    end
+    at(tob, x - width * offset, y)
+  end
+
+  def at(tob, x, y) do
+    tob.map
+    |> Enum.at(y, [])
+    |> Enum.at(x)
   end
 
   def go(tob, x, y, slope, count) do
